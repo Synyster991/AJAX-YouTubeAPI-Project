@@ -23,11 +23,15 @@ from django.conf import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.home, name='home'),
+    path('dashboard', views.dashboard, name='dashboard'),
     # AUTH
     path('signup', views.SignUp.as_view(), name='signup'),
     path('login', auth_views.LoginView.as_view(), name='login'),
     path('logout', auth_views.LogoutView.as_view(), name='logout'),
     #Library
-    path('library/create', views.CreateLibrary.as_view(), name='create_library')
+    path('library/create', views.CreateLibrary.as_view(), name='CreateLibrary'),
+    path('library/<int:pk>', views.DetailLibrary.as_view(), name='DetailLibrary'),
+    # path('library/create/<int:pk>/update', views.UpdateLibrary.as_view(), name='UpdateLibrary'),
+    # path('library/create/<int:pk>/delete', views.DeleteLibrary.as_view(), name='DeleteLibrary'),
 ] 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
