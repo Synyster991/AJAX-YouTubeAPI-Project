@@ -17,7 +17,15 @@
 
     <h2>OR</h2>
     <form method='POST'>
-        {{ searchForm}}
+        {% load widget_tweaks %}
+
+        {% for field in searchForm %}
+        <div class="form-group {% if field.errors %}alert alert-danger{% endif %}">
+            {{ field.errors }}
+            {{ field.label_tag }}
+            {% render_field field class="form-control" %}
+        </div>
+        {% endfor %}
     </form>
 </div>
 {% endblock %}
