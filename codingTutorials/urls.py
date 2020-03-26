@@ -33,5 +33,7 @@ urlpatterns = [
     path('library/<int:pk>', views.DetailLibrary.as_view(), name='DetailLibrary'),
     path('library/<int:pk>/update', views.UpdateLibrary.as_view(), name='UpdateLibrary'),
     path('library/<int:pk>/delete', views.DeleteLibrary.as_view(), name='DeleteLibrary'),
+    # Video
+    path('library/<int:pk>/addvideo', views.AddVideo, name='AddVideo'),
 ] 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

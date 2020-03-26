@@ -35,6 +35,7 @@ LOGOUT_REDIRECT_URL = 'home'
 
 INSTALLED_APPS = [
     'library.apps.LibraryConfig',
+    'widget_tweaks',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

@@ -3,14 +3,35 @@ from django.urls import reverse_lazy
 from django.views import generic
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login
-from .models import Library
+from .models import Library, Video
+from .forms import VideoForm, SearchForm
 
 
 def home(request):
     return render(request, 'library/home.html')
 
+
 def dashboard(request):
     return render(request, 'library/dashboard.html')
+
+
+def AddVideo(request, pk):
+    form = VideoForm()
+    searchForm = SearchForm()
+
+    if request.method == 'POST':
+        # Create
+        filledForm = VideoForm(request.POST)
+
+        if filledForm.is_valid():
+            video = Video()
+            video.url = filledForm.cleaned_data['url']
+            video.title = filledForm.cleaned_data['title']
+            video.youtube_id = filledForm.cleaned_data['youtube_id']
+            video.library = Library.objects.get(pk=pk)
+            video.save()
+
+    return render(request, 'library/AddVideo.html', {'form': form, 'searchForm': searchForm})
 
 
 class SignUp(generic.CreateView):
@@ -25,6 +46,7 @@ class SignUp(generic.CreateView):
         login(self.request, user)
 
         return view
+
 
 class CreateLibrary(generic.CreateView):
     model = Library
