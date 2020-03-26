@@ -31,7 +31,7 @@ urlpatterns = [
     #Library
     path('library/create', views.CreateLibrary.as_view(), name='CreateLibrary'),
     path('library/<int:pk>', views.DetailLibrary.as_view(), name='DetailLibrary'),
-    # path('library/create/<int:pk>/update', views.UpdateLibrary.as_view(), name='UpdateLibrary'),
-    # path('library/create/<int:pk>/delete', views.DeleteLibrary.as_view(), name='DeleteLibrary'),
+    path('library/<int:pk>/update', views.UpdateLibrary.as_view(), name='UpdateLibrary'),
+    path('library/<int:pk>/delete', views.DeleteLibrary.as_view(), name='DeleteLibrary'),
 ] 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

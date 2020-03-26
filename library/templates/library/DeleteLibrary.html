@@ -1,0 +1,13 @@
+{% extends 'library/base.html' %}
+{% block content %}
+<div class="container">
+    <h2>Are you sure you want to delete this Library?</h2>
+    <form method="POST"> {% csrf_token %}
+        {{ form.as_p }}
+        <button type='submit' class="btn btn-danger">Yes</button>
+    </form>
+
+    <br>
+    <h2><a href="{% url 'DetailLibrary' library.pk %}">{{ library.title }}</a></h2>
+</div>
+{% endblock %}

@@ -29,8 +29,8 @@ class SignUp(generic.CreateView):
 class CreateLibrary(generic.CreateView):
     model = Library
     fields = ['title']
-    template_name = 'library/create_library.html'
-    success_url = reverse_lazy('home')
+    template_name = 'library/CreateLibrary.html'
+    success_url = reverse_lazy('dashboard')
 
     def form_valid(self, form):
         form.instance.user = self.request.user
@@ -42,3 +42,18 @@ class CreateLibrary(generic.CreateView):
 class DetailLibrary(generic.DetailView):
     model = Library
     template_name = 'library/DetailLibrary.html'
+
+
+class UpdateLibrary(generic.UpdateView):
+    model = Library
+    template_name = 'library/UpdateLibrary.html'
+    fields = ['title']
+    success_url = reverse_lazy('dashboard')
+
+
+class DeleteLibrary(generic.DeleteView):
+    model = Library
+    template_name = 'library/DeleteLibrary.html'
+    success_url = reverse_lazy('dashboard')
+
+
