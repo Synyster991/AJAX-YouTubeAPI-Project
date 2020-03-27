@@ -26,7 +26,11 @@ SECRET_KEY = 'at&5qm(xs$&s$$)_czf-(!$^ngxssdu-z^=8_3gz^51xfoxk1+'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'secure-temple-99891.herokuapp.com/',
+    'coolytlibraries.com',
+    'www.coolytlibraries.com',
+]
 
 
 LOGIN_URL = 'login'
