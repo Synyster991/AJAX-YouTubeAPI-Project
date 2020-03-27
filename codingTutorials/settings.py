@@ -28,8 +28,6 @@ DEBUG = False
 
 ALLOWED_HOSTS = [
     'secure-temple-99891.herokuapp.com/',
-    'coolytlibraries.com',
-    'www.coolytlibraries.com',
 ]
 
 
