@@ -3,7 +3,15 @@
 <div class="container">
     <h2>Create Library</h2>
     <form method="POST"> {% csrf_token %}
-        {{ form.as_p }}
+        {% for field in form %}
+        {% load widget_tweaks %}
+
+        <div class="form-group {% if field.errors %}alert alert-danger{% endif %}">
+            {{ field.errors }}
+            {{ field.label_tag }}
+            {% render_field field class="form-control" %}
+        </div>
+        {% endfor %}
         <button type='submit' class="btn btn-primary">Create</button>
     </form>
 </div>

@@ -7,20 +7,37 @@ from .models import Library, Video
 from .forms import VideoForm, SearchForm
 from django.http import Http404, JsonResponse
 from django.forms.utils import ErrorList
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 import urllib
 import requests
+
 
 
 YOUTUBE_API_KEY = 'AIzaSyAMabIz6N-gn3upBoAuJWWKoKER_dkR_rQ'
 
 def home(request):
-    return render(request, 'library/home.html')
+    recentLibraries = Library.objects.all().order_by('-id')[:3]
+    popularLibraries = [Library.objects.get(pk=1), Library.objects.get(pk=2), Library.objects.get(pk=3)]
+
+    passing_dict = {
+        "recentLibraries": recentLibraries,
+        "popularLibraries": popularLibraries
+    }
+    return render(request, 'library/home.html', passing_dict)
 
 
+@login_required
 def dashboard(request):
-    return render(request, 'library/dashboard.html')
+    libraries = Library.objects.filter(user=request.user)
+
+    passing_dict = {
+        'libraries': libraries 
+    }
+    return render(request, 'library/dashboard.html', passing_dict)
 
 
+@login_required
 def AddVideo(request, pk):
     form = VideoForm()
     searchForm = SearchForm()
@@ -53,6 +70,7 @@ def AddVideo(request, pk):
     return render(request, 'library/AddVideo.html', {'form': form, 'searchForm': searchForm, 'library':library})
 
 
+@login_required
 def videoSearch(request):
     search_form = SearchForm(request.GET)
     if search_form.is_valid():
@@ -62,15 +80,22 @@ def videoSearch(request):
     return JsonResponse({'error':'Not able to validate form'})
 
     
-class DeleteVideo(generic.DeleteView):
+class DeleteVideo(LoginRequiredMixin, generic.DeleteView):
     model = Video
     template_name = 'library/DeleteVideo.html'
     success_url = reverse_lazy('dashboard')
 
+    def get_object(self):
+        video = super(DeleteVideo, self).get_object()
+        if not video.library.user == self.request.user:
+            raise Http404
+        else:
+            return video
+
 
 class SignUp(generic.CreateView):
     form_class = UserCreationForm
-    success_url = reverse_lazy('home')
+    success_url = reverse_lazy('dashboard')
     template_name = 'registration/signup.html'
 
     def form_valid(self, form):
@@ -82,7 +107,7 @@ class SignUp(generic.CreateView):
         return view
 
 
-class CreateLibrary(generic.CreateView):
+class CreateLibrary(LoginRequiredMixin, generic.CreateView):
     model = Library
     fields = ['title']
     template_name = 'library/CreateLibrary.html'
@@ -92,7 +117,7 @@ class CreateLibrary(generic.CreateView):
         form.instance.user = self.request.user
         super(CreateLibrary, self).form_valid(form)
 
-        return redirect('home')
+        return redirect('dashboard')
 
 
 class DetailLibrary(generic.DetailView):
@@ -100,16 +125,30 @@ class DetailLibrary(generic.DetailView):
     template_name = 'library/DetailLibrary.html'
 
 
-class UpdateLibrary(generic.UpdateView):
+class UpdateLibrary(LoginRequiredMixin, generic.UpdateView):
     model = Library
     template_name = 'library/UpdateLibrary.html'
     fields = ['title']
     success_url = reverse_lazy('dashboard')
 
+    def get_object(self):
+        library = super(UpdateLibrary, self).get_object()
+        if not library.user == self.request.user:
+            raise Http404
+        else:
+            return library
 
-class DeleteLibrary(generic.DeleteView):
+
+class DeleteLibrary(LoginRequiredMixin, generic.DeleteView):
     model = Library
     template_name = 'library/DeleteLibrary.html'
     success_url = reverse_lazy('dashboard')
+
+    def get_object(self):
+        library = super(DeleteLibrary, self).get_object()
+        if not library.user == self.request.user:
+            raise Http404
+        else:
+            return library
 
 

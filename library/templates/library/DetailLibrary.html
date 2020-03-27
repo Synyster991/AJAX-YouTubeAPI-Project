@@ -3,5 +3,25 @@
 <div class="container">
     <h1>{{ library.title }}</h1>
     <h4 class="text-muted">{{ library.user.username }}</h4>
+    {% if user.id == library.user.id %}
+    <a href="{% url 'UpdateLibrary' library.id %}" class="btn btn-primary">Edit</a>
+    <a href="{% url 'AddVideo' library.id %}" class="btn btn-primary">Add Video</a>
+    <a href="{% url 'DeleteLibrary' library.id %}" class="btn btn-danger">Delete</a>
+    {% endif %}
+    <div class="row">
+        {% for video in library.video_set.all %}
+        <div class="col-md-4 mt-3">
+            <div class="card mb-4 shadow-sm">
+                <iframe width="100%" height="225" src="https://www.youtube.com/embed/{{ video.youtube_id }}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                <div class="card-body">
+                    <p class="card-text">{{ video.title }}</p>
+                    {% if user.id == library.user.id %}
+                        <a href="{% url 'DeleteVideo' video.id %}" class="btn btn-danger">Delete</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
 </div>
 {% endblock %}
