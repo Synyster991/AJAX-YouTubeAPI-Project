@@ -35,5 +35,8 @@ urlpatterns = [
     path('library/<int:pk>/delete', views.DeleteLibrary.as_view(), name='DeleteLibrary'),
     # Video
     path('library/<int:pk>/addvideo', views.AddVideo, name='AddVideo'),
+    path('video/search', views.videoSearch, name='videoSearch'),
+    path('video/<int:pk>/delete', views.DeleteVideo.as_view(), name='DeleteVideo'),
+
 ] 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
