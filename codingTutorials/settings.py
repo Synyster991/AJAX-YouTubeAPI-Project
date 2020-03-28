@@ -77,7 +77,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'codingTutorials.settings'
+WSGI_APPLICATION = 'codingTutorials.wsgi.application'
 
 
 # Database
