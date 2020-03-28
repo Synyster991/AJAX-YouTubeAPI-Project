@@ -15,3 +15,6 @@ class Video(models.Model):
     youtube_id = models.CharField(max_length=255)
     library = models.ForeignKey(Library, on_delete=models.CASCADE)
 
+    def __str__(self):
+         return "{} by {}".format(self.title, self.library.user.username)
+
